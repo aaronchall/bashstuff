@@ -1,0 +1,84 @@
+echo $SP1
+SP1="command prompt"
+type # determine how shell finds command
+file # classifies file based on content
+date # displays date and time
+alias # manage command shortcuts
+unalias
+sort # sorts contents of file (by line?)
+uniq # print out unique lines in a sorted file
+comm # print common line in pair of sorted files
+ptx # produce permuted indexes
+sleep # go to sleep for seconds
+strings # display printable strings from a binary file
+time # time a command
+
+cat -v # flag shows viewable chars
+
+cat foo bar | head -2
+cat foo bar | tail -2
+
+more # h gives help
+less
+
+# lpr mostly replaced by CUPS (which has web interface), but here's commands
+lpr # print to default printer, can pipe and redirect into
+lpr -MyPrinterName foofile
+lpq # view print queue
+lprm 14 # remove job 14
+lpq -MyPrinterName
+lpc # view print system stats
+
+cut # cuts fields out of file, whitespace delimited default or other char with -d, 
+tail /etc/passwd | cut -d: -f1,5 # f flag followed by list or range by dash for just those fields
+cut -c1-3 # cut by char position, here chars 1,2,3 from the file
+
+tr 'a-z' 'A-Z' < foo.file  # translate lower to upper
+cat foofile | tr -dc 'aeiou\n' # -d will delete chars -dc will delete complements
+wc foofile # word count of file, -l line count, -c char count, -w word count, default is all (-lwc)
+
+grep word foofile # looks for "word" in file, returns line
+grep -i word foofile # ignore case
+grep '[aeiou]' foofile # look for lines with a vowel in them
+grep 'a[^n]' foofile # look for lines with a not followed by n
+grep 'a.*e' foofile # a must be followed by e with 0 or more other chars in between
+grep 'a.a' foofile # two a's with any char between
+grep '^a' foofile # a at beginning of line
+grep 'a$' foofile # a at end of line, ^ and & lose this meaning at other places in regex
+
+sort -r foofile # reverse sorts
+sort -f foofile # ignore case (default is uppercases first)
+sort foofile foofile2 # can sort more than one at a time
+sort -t: -k2 foofile # using : as delimeter, sort by 2nd field, can numeric sort with -n
+tsort # topological sort utility
+
+cmp foofile1 foofile2 # compares files, reports if they differ (nothing if they don't)
+cksum foofile1 foofile2
+
+comm foofile1 foofile2 # if files are sorted, can search for common lines
+comm -13 foofile1 foofile2 #suppress lines unique to file 1, suppresses lines in both files
+
+diff -c foofile1 foofile2 # shows diff used in rcs and cvs for version control, -c more readable output, -u too
+# zcomp, zdiff # utilities to compare compressed files
+
+paste foofile foofile2 foofile3 # concatenate horizontally, joining with tabs
+paste -s foofile # joins lines on a single line with tabs
+paste -d ':\n' foofile # can control number of columns and delimiters (here, separate alternating by : then \n)
+
+join -t= -12 foofile foofile2 # match fields delimited by = (tab default), here key field for file 1 is field 2
+join -t= -12 -o 1.2 2.2 foofile foofile2 # -o flag can supply file.field pairs to output, instead of default 
+# here join on second field, and output second field of each file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
