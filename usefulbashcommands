@@ -70,6 +70,30 @@ join -t= -12 -o 1.2 2.2 foofile foofile2 # -o flag can supply file.field pairs t
 # here join on second field, and output second field of each file.
 
 
+multi-user!!!
+
+mail foo@bar.com # enter subject, type message, ctrl-D or single period on lone line to stop, enter CC list
+mail # with no commands, opens mailbox and presents list of messages, 
+#can type number of message to view, d deletes, q quits
+
+# Mutt is a client based on ELM with ideas from PINE and other freeware email clients
+# POP3/IMAP services must be running in Linux for them to work on Outlook, e.g. in Windows shell:
+telnet linux_machine_domain_name 143 # tests for IMAP server, exit with ". logout"
+telnet linux_machine_domain_name 25 # show if mail server exists and is accessible, exit with "quit"
+telnet linux_machine_domain_name 110 # tests for POP3 server, exit with "quit"
+# if no response, possible firewall or no service
+
+
+
+
+
+
+ 
+
+
+
+
+
 
 
 
