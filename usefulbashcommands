@@ -83,6 +83,22 @@ telnet linux_machine_domain_name 25 # show if mail server exists and is accessib
 telnet linux_machine_domain_name 110 # tests for POP3 server, exit with "quit"
 # if no response, possible firewall or no service
 
+### Managing Processes ###
+
+ps # show current status of process, no args just shows the ones belonging to the current login session
+ps -f # show full information, including parent PID (PPID), starttime (STIME) and user id UID
+ps -e # every process, can limit to users (-u) groups (-g) PIDs (-p) and terminal (-t)
+ps -u user_a
+ps -t tty4
+ps -p 17075
+ps -fp 17075
+# two ways to manage processes: kill, skill and pkill or /proc interface
+# signals: ctrl-c sends INT and ctrl-\ sends QUIT, HUP is a modem hangup, 
+# kill can only send to own processes, unless superuser (root)
+# sending to login shell kill -1 or kill -HUP will cause shell to terminate and log you out
+kill # default is 15
+kill -1 <bash PID> # logout
+
 
 
 
