@@ -97,7 +97,60 @@ ps -fp 17075
 # kill can only send to own processes, unless superuser (root)
 # sending to login shell kill -1 or kill -HUP will cause shell to terminate and log you out
 kill # default is 15
-kill -1 <bash PID> # logout
+kill <pid> # syntax
+kill -9 <pid> # KILL
+kill -1 <bash PID> # logout, i.e. HUP
+
+# /proc entries
+ls -l /proc/<pid>
+tr '\0' '\r' < /proc/<pid>/environ # see the environment, translate ascii nulls to LF chars
+ls -l /proc/<pid>/fd # file descriptor, see a processes open files (called file handle on some "other" systems)
+umount /home # unmount the home file system, can't be done if a file process is open
+ls -l /proc/*/fd | grep /home # find all files open in home filesystem
+
+# end command with & to create running job in background
+# ctrl-z to stop a running job
+jobs # view jobs, '+' current job, '-' next to become current, status, command line used
+fg # foreground the current job
+^Z # ctrl-z to stop it
+bg # background the job while running (like adding & to end)
+fg %<n> # specify by job number, kill can use same specification, replacing the %n with the pid
+# kill can also send SIGSTOP and SIGCONT
+
+Scheduling
+# cron, at, and batch to schedule tasks
+# use cron for repetitive tasks
+# crontab provides table of cron entries format is:
+# min hr day mo dayofwk cmd
+# create a new crontab,  
+cat > mycron 
+4 2 * * * /home/ajax/bin/mybackup
+^D
+crontab mycron
+crontab -l # list the contents
+crontab -r # remove the table
+crontab -e # edit the table with editor named in editor or visual environment variables
+# cron commands are run using the /bin/sh, standard Bourne shell
+# output is typically captured and emailed to user, so common to redirect output, e.g.
+3 5 * * 1-5 morning_job > /dev/null 2>&1
+# shell env not the same as login env, may need to setup own environment including PATH
+
+
+at 10am tomorrow # schedule one-off job
+at> /home/me/bin/reminder # prompt
+at> <EOT> #  ctrl-d
+# can use now + 3 days, times before current assumed to be tomorrow, days and months as names, 
+# now tomorrow, noon, midnight, teatime (4pm) also understood
+
+# batch is subset of at, defers processing until system load is light enough to continue
+# batch waits until load average drops below .8 (busy system may have load average of 4.0+)
+
+
+
+
+
+
+
 
 
 
