@@ -267,10 +267,45 @@ $ /home/user/test
 # see tldp.org/LDP/abs/html and tldp.org/HOWTO/Pash-Prompt-HOWTO/
 
 
+## Linux File System Notes
+# Basics
+# ext4 supports volumes up to 1 exabyte and file sizes up to 16 terabytes, 
+# came with kernel version 21 Oct 2008 Linux 2.6.28
+# ext3 current from November 2001 Linux 22.4.15, filesystem size of 32 TB and max file size 2 TB
+uname -a # displays information about kernel version
 
+# file system usually consists of superblock (master information table), 
+# inodes (list of file summary information, INODE list),
+# and data blocks associated with the data
 
+# Every filesystem has root dir, identified by inode number 2. can be used to mount to root filesystem
+# mount point is the directory where a new filesystem if attached
+# unmount command
+# mount command requires special file (e.g. /dev/hda3), mount point (e.g. /user), and optional filesystem type
+# normally only superuser can mount or unmount
+mount # show filesystems mounted
+# /proc is a view inside the kernel; to see filesystem types supported cat /proc/filesystems
+# some systems call files data sets and directories folders, collections, or catalogs
+# / is root dir
+# /bin is for executables
+# /lib is for shared libraries
+# /home is for user files
 
+# directory is just list of filenames and inode numbers
+# inode completely identifies the file, but has no filename so all directory needs is name and number
+# ext3 supports up to 255 char filenames, only truly illegal chars are / and ascii nul.
+# shell characters should not be used as they can make it difficult to find a file
 
+# a file is a collection of data blocks, ext3 will have 1, 2, 4, or 8. 
+# If filesystem has 4k block size, a file of 1 byte length will still occupy 1096 bytes of disk space
+# data blocks are not necessarily contiguous
+# in Linux everything is a file: a directory, system memory, disks, keyboard, screen, and all system devices 
+# can be access using hte same tools and commands as a regular file
+# This is the basic philosophy of Linux
+# /dev dir's special files link to kernal device driver that uses normal file access methods for communication
+# /dev entry looks like any file except it does not have a size. 
+# It has a major (id's device driver) and minor (sub-device or operation for the device driver) device number
+# two kinds of device drivers: block and character, each with own set of major numbers
 
  
 
