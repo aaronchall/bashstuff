@@ -189,7 +189,7 @@ free # shows how much free system memory there is
 top # displays process information and system wide information in tabular form
 
 # review man pages for syslog, logger, and chkconfig (for System V), see tldp.org
-
+#####
 # Bash
 # global startup: /etc/profile, sets PATH, USER, LOGNAME, MAIL, HOSTNAME, and HISTSIZE
 # global aliases set in /etc/bashrc
