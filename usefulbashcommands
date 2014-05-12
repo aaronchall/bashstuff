@@ -134,17 +134,36 @@ crontab -e # edit the table with editor named in editor or visual environment va
 # output is typically captured and emailed to user, so common to redirect output, e.g.
 3 5 * * 1-5 morning_job > /dev/null 2>&1
 # shell env not the same as login env, may need to setup own environment including PATH
-
-
+# at
 at 10am tomorrow # schedule one-off job
 at> /home/me/bin/reminder # prompt
 at> <EOT> #  ctrl-d
 # can use now + 3 days, times before current assumed to be tomorrow, days and months as names, 
 # now tomorrow, noon, midnight, teatime (4pm) also understood
-
+# batch
 # batch is subset of at, defers processing until system load is light enough to continue
 # batch waits until load average drops below .8 (busy system may have load average of 4.0+)
+# simplest way to defer heavy job
 
+# Logging
+# syslog system is admin'd by system log daemon, syslogd
+# amount and where controlled by /etc/syslog.conf, on RedHat is /var/log, others /var/adm
+# syslog uses two params, facility and priority, syslog, 
+# Facilities: http://en.wikipedia.org/wiki/Syslog#Facility_levels, additionally mark used internally
+# priority levels of level mentioned and higher will be logged, can override with =
+# don't overload system with log files, make sure utiltities like logrotate used to reduce impact of logging
+# logs best defence against system instability, all subsystems capable of causing system failure write to logger
+# logrotate rotates files to control size, may be requirement to send signal to syslogd or other process re new file
+# generally 4 weeks of log files kept
+# syslog entries have date, time, name of system, (maybe pid) then actual message
+# syslog is network aware and may log to central host, 
+# well-behaved applications use syslog facility or log directly to /var/log directory
+# syslog writes more important message to /var/log/messages, security to /var/log/secure, mail to /var/log/maillog
+# other facilities may use specific files in /var/log like cron, spooler, xferlog (ftp), and boot.log
+# Apache stores log files in subdirectory of its installation dir, often linked to /var/log/httpd
+# include access_log, error_log, and ssl_request_log, referring sites and CGI errors logs may also be configured
+
+# Samba
 
 
 
