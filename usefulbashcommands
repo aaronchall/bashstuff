@@ -162,8 +162,33 @@ at> <EOT> #  ctrl-d
 # other facilities may use specific files in /var/log like cron, spooler, xferlog (ftp), and boot.log
 # Apache stores log files in subdirectory of its installation dir, often linked to /var/log/httpd
 # include access_log, error_log, and ssl_request_log, referring sites and CGI errors logs may also be configured
+# Samba logs on /var/log/samba, 
+# a file for each machine that uses files on the Linux system, 
+# and for the two main components smbd (session establishment and control for file and printer sharing) 
+#                             and nmbd (name to address mapping)
+# many other apps that log, db servers, proxy servers, usenet news servers, know where ones on your system log
+# general docs, including setup info, usually in /usr/doc, start with README and INSTALL
 
-# Samba
+# Start with error messages in syslog when looking for why apps fail.
+# system may create core file, containing memory image of process (main system memory was originally called core memory) 
+# can be used to autopsy dead process
+file core # do first to determine what program caused the core and what signal if any initiated core dump
+man 7 signal # list signals
+strings core | tail # strings displays printable strings from a binary file, 
+# at end will be process environment including command used to start program
+# can give clues to cause of death, looking for pathnames can give information about config files and shared libs
+# System V (not always available)
+system status # System V startup scheme frequently used for starting, stopping restarting, and getting status info
+# files in /etc/rc.d/init.d or /etc/init.d are startup and shutdown files, 
+# each takes single arg: start, stop, restart, status
+/etc/rc.d/init.d/httpd status # give a short description fo status
+/etc/rc.d/init.d/smb status 
+# some apps also support reload and condrestart (conditional restart)
+
+free # shows how much free system memory there is
+top # displays process information and system wide information in tabular form
+
+# review man pages for syslog, logger, and chkconfig (for System V), see tldp.org
 
 
 
