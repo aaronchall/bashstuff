@@ -251,11 +251,20 @@ shopt
 # controls command line history, filename globbing (expansion with metachars) execution of commands, 
 # correcting spelling mistakes in dir names, et al
 # both set and shopt fully documented in Bash online manual
+# useful options set in shell:
+# cdspell checks for minor spelling mistakes in directory names when using cd command e.g.
+$ mkdir test
+$ cd tst # error
+$ shopt -s cdspell
+$ cd tst
+test
+$ pwd
+$ /home/user/test
 
-
-
-
-
+# PATH variable is searched when simple command is not found in working dir, if very long, shell can appear slow
+# good to keep paths short, be careful not to set PATH in .bashrc expecially if extending normal path, can result in PATH
+# becoming longer for each subshell call.
+# see tldp.org/LDP/abs/html and tldp.org/HOWTO/Pash-Prompt-HOWTO/
 
 
 
