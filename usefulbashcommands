@@ -190,6 +190,68 @@ top # displays process information and system wide information in tabular form
 
 # review man pages for syslog, logger, and chkconfig (for System V), see tldp.org
 
+# Bash
+# global startup: /etc/profile, sets PATH, USER, LOGNAME, MAIL, HOSTNAME, and HISTSIZE
+# global aliases set in /etc/bashrc
+# both affect all users
+# next file one of .bash_profile, .bash_login or .profile, first found is executed.
+# .bash_profile is user's local profile, and sets environment for user's login session
+# after profiles, .bashrc (in user's home dir) runs if exists, 
+# it normally calls /etc/bashrc file then gives local directives
+# if .bash_logout exists in user's home dir, will be executed on user's logout
+# can be used for logging commands, remove temp files, or other cleanup
+# Four prompt strings: PS1 PS2 PS3 PS4 (switching to more literal session of $ prompts while discussing prompts)
+$ echo $PS1 # show prompt, see next line
+$
+$ echo $PS2 # PS2 used for further lines of input
+>
+$ while true
+> do
+> sleep 2
+>
+$ echo $PS3 #  prompt for generated menu, next line is literal:
+#?
+$ echo $PS4 #  used for debugging shell scripts, enabled with -x option to shell, or set -x at start of script
+$ set -x
+$ echo $?
++ echo 0
+0
+$ PS4='DBG: '
+DGB: PSr=DGB:
+$ echo $?
+DBG: echo 0
+0
+$
+# if command is within file that is sourced, called, from current shell, 
+# first char of PS4 prompt is duplicatedto indicated the indirection
+# PS3 and PS4 can be set to any text displayed without change, but PS1 and PS2 can use variable text
+# done with $(command) syntax or special chars
+# when doing, put entire string in single quotes, double quotes will evaluate before setting var, giving static text
+# see http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
+
+# three main classes of options: 1 readline (in .inputrc), 2 shell running (with set, see examples), 
+set completion-ignore-case on
+set -o vi
+# and 3 extended features use shopt
+shopt -s nocaseglob
+# .inputrc 
+# is startup file for readline (lib handles user input), can contain key mappings, 
+# supports macro language for conditional mappings based on editing mode, terminal type, or application name
+set key-bindings vi # in .inputrc is equivalent to
+set -o vi # in .bashrc
+# large numer of options in readline, see info readline or man readline
+# set
+# supports single char options and verbose, using -o option name syntax, e.g.:
+set -a # make all functions and variables exportable
+set -o allexport # same
+# -n option displays each line as read, doesn't execute (good to catch syntax errors)
+# -x displays line as executed, (catch logic errors)
+shopt
+# for extended shell functionality, uses -s to set variable -u to unset, -q to be quiet
+# controls command line history, filename globbing (expansion with metachars) execution of commands, 
+# correcting spelling mistakes in dir names, et al
+# both set and shopt fully documented in Bash online manual
+
 
 
 
