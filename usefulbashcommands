@@ -306,8 +306,76 @@ mount # show filesystems mounted
 # /dev entry looks like any file except it does not have a size. 
 # It has a major (id's device driver) and minor (sub-device or operation for the device driver) device number
 # two kinds of device drivers: block and character, each with own set of major numbers
+# type (b for block, c for raw)
+# then permissions, link count, owner, group, major dev number, minor, create date, name e.g.
+# brw-rw----  1  root  floppy  2,0  May 6 2010  fd0
 
- 
+# other general purpose devices:
+# /dev/null is the bit bucket, discards input
+# similar is /dev/zero which does same for writes, but when read returns as many NUL (Hex 00) chars you ask to read
+# useful to create zero filled files for testing or database initialization
+ls -l /dev/null
+cat /dev/null # nothing!
+cat /dev/null > x
+ls -l x # shows newly created file
+dd bs=1 count=5 if=/dev/zero | cat -v # read five bytes from /dev/zero
+
+# fileinfo: type (- is normal file), permissions, link count, owner, group, filesize, create date, name
+ls -l # shows:
+# -rw-rw----  1  root  floppy  234  May 6 2010  fname
+ls -s / # show size in blocks, 
+ls -sh / # human readable
+ls -i / # show inode numbers
+ls -lt / # sort output by modification time, can also sort by access time (-u) and creation time (-c)
+ls -r / # reverse order
+cp /dev/null localfile
+ls # localfile created
+cp /dev/null test1
+cp /dev/null test2
+ls /tmp # nothing!
+ls # files created
+cp test1 test2 /tmp # copy to /tmp
+ls /tmp # copied
+ls # originals still there
+mv test1 test2 /tmp # move files instead
+ls # no longer there
+ls /tmp # now here
+
+rm -i localfile # ask for confirmation before deleting
+# if used on readonly file, will also ask for confirmation
+# can force silence of interaction with -f
+# linking allows multiple names to appear for single file
+touch test1 test2 test3
+ls
+ls -l
+ls test3 test4 # link test3 to test4
+ls -i # show inodes are same for both
+cat test3
+cat test4
+cat > test3
+abc
+^D
+cat test3
+cat test4 # has same contents
+ln xyz /tmp/xyz
+ln -i /bin/mv /bin/cp /bin/ln # ln creates hard links, can't link files to another filesystem because inodes
+# mv doesn't physically move data, just updates the source and target dirs, unless on diff filesystems
+# which is then same as cp and rm. ln, cp and mv are actually the same program
+# Can only create alias for files, not dirs. Source must exist prior to linking
+# ls -s can solve both problems, creates symbolic (soft) link, 
+# works across filesystems, doesn't check for existence of source file
+# can link files to files, files to directories, or directories to directories
+# /usr/tmp is an example of symbolic link to /var/tmp dir.
+file /usr/tmp # shows symbolic link
+ls -l /usr/tmp # shows pointer in info
+touch /var/tmp/xx
+ls /var/tmp
+ls /usr/tmp # same file here
+# see also mkfs (make filesystem), tunefs, debugfs, fsck (check and repair filesystem)
+
+
+
+
 
 
 
