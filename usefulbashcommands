@@ -441,7 +441,7 @@ exit # exits superuser, prompt reverts
 # chown user:group file # syntax, :group is optional
 # chgrp group file # syntax to change groups
 umask # mask an octal number by subtracting from defaults
-# defaults typicall 777 for dirs, 666 for files
+# defaults typically 777 for dirs, 666 for files
 # umask of 0022 results in 644 perms
 # superuser creates a umask for system wide shell initialization in /etc/profile or users .profile or .bashrc
 umask 0022 # see session below, prompt is strangely #:
