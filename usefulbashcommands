@@ -373,6 +373,119 @@ ls /var/tmp
 ls /usr/tmp # same file here
 # see also mkfs (make filesystem), tunefs, debugfs, fsck (check and repair filesystem)
 
+# Linux Security
+# user id (UID): number id's user to the system, each allocated to a group
+# group id (GID): number id's 
+# superuser: login name is root, UID is 0, can add users and other admin functions
+# daemons: required users with no login that control background processes
+# bin, daemon, adm, lp, mail, news are users listed in the user password file, but no valid password, so cannot login
+# called privileged users, they typically have similar privileges to root
+cat /etc/passwd # text file, colon delimited, has the following schema: 
+# loginname, password (x for backward compatibility), UID, GID, comment, homedir, initialshell
+# real password kep in more secure file called /etc/shadow
+cat /etc/group # has schema:
+# groupname, password (typically empty), GID, and optional members
+newgrp # command allows user to assume privileges of the new group
+# if password field is filled, any user can become a member with the password using newgrp
+# (u)ser , (g)roup, (o)ther, rwxrw-r--, (a)ll
+ls -al # see 10 char field, first is file type (d for directory, - normal file) e.g. -rw-rrw-r--
+ls -l /usr/bin/passwd # other permissions: setuid setgid and sticky bit (text save permissions)
+-r-s--x--x   1 root    root    12345 Jul 12  2000 /usr/bin/passwd
+ls -l /etc/shadow
+-rw-------   1 root    root     1234 May  9  17:12 /etc/shadow
+# setuid adn setgid used on executables to raise privilege for duration of execution
+# passwd command can write new password to shadow file, (only writable by superuser)
+# setuid or setgid bit indicated by appropriate x in ls -l, replaced by s
+# sticky bit used to indicate keeping part of executable in memory, now typically done by default
+ls -ld /tmp
+id # show uid, gid, and groups
+# on directory, sticky bit determines who can delete files (only owner can delete)
+# so files can be deleted even if can't read write or execute because add or delete file implicitly writes to file's dir
+ls -ld safe_dir
+ls -l safe_dir
+rm safe_dir/xx
+rm: cannot unlink 'safe_dir/xx': Permission denied
+# permissions controlled by chmod, chgrp and chown
+# user can manage perms on files they own, but only superuser can manage perms for other users
+# (r)ead, (w)rite, e(x)ecute, (s)et id, s(t)icky, (u)ser, (g)roup, (o)ther, (a)ll, 
+# (+) add permission, (-) remove perm, (=) set permissions
+# Special, User, Group, Other
+# SetUID, SetGID, Sticky, (Read, Write, Execute), (Read, Write, Execute), (Read, Write, Execute)
+# 4000, 2000, 1000, 400, 200, 100, 40, 20, 10, 4, 2, 1 octal
+ls -l mytest
+-rw-r--r--
+chmod a-rw mytest # symbolic
+ls -l mytest
+----------
+chmod u+rw mytest
+ls -l mytest
+-rw-------
+chmod go=rw mytest
+ls -l mytest
+-rw-r--r--
+chmod 644 mytest # octal
+ls -l mytest
+-rw-r--r--
+chmod 751 mytest 
+ls -l mytest
+-rwx-r-x--x
+# note symbolic representations are always entered as the set of users + - or = and then the perms set
+
+ls -l myfile
+chown myuser myfile # not permitted? only superuser can change file ownership
+su # superuser, enter password, note change in prompt
+id 
+chown myuser myfile
+ls -l myfile
+exit # exits superuser, prompt reverts
+# chown user:group file # syntax, :group is optional
+# chgrp group file # syntax to change groups
+umask # mask an octal number by subtracting from defaults
+# defaults typicall 777 for dirs, 666 for files
+# umask of 0022 results in 644 perms
+# superuser creates a umask for system wide shell initialization in /etc/profile or users .profile or .bashrc
+umask 0022 # see session below, prompt is strangely #:
+/var/root # umask                                                               
+0022                                                                            
+/var/root # touch x                                                             
+/var/root # ls -l x                                                             
+-rw-r--r--    1 root     root             0 May 13 13:36 x                      
+/var/root # umask 0002                                                          
+/var/root # rm x                                                                
+/var/root # touch x                                                             
+/var/root # ls -l x                                                             
+-rw-rw-r--    1 root     root             0 May 13 13:36 x                      
+/var/root # mkdir a                                                             
+/var/root # ls -ld a                                        # display perms of directory with -d
+drwxrwxr-x    2 root     root            40 May 13 13:36 a                      
+/var/root # umask 027                                                           
+/var/root # touch y                                                             
+/var/root # ls -l y                                                             
+-rw-r-----    1 root     root             0 May 13 13:37 y                      
+/var/root # mkdir b                                                             
+/var/root # ls -ld b                                                            
+drwxr-x---    2 root     root            40 May 13 13:37 b                      
+# see also yppasswd in the NIS (Network Information Service) system, managing remote passwords
+# pam_console for managing permissions on the system consoles
+# Internet RequestForComment (RFC) Unified Login with Pluggable Authentication Modules
+# www.opengroup.org/tech/rfc/rfc86.0.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
