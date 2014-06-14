@@ -472,8 +472,46 @@ drwxr-x---    2 root     root            40 May 13 13:37 b
 
 
 
+# File System Management includes
+# 1. Clean up files
+# 2. Check file growth
+# 3. Check disk usage
+# 4. Do backups
+# SA can also  mount and unmount file systems, allocate quotas on file numbers and disk space, 
+# and load and unload modules required for specific file system requirements
+# ordinary users contribute, less likely to have problems because of SA limits
+# clean up files not in use or archive & compress them, don't clutter home dir, 
+# use hierarchy to store and retrieve, check for files that are growing, take steps to keep them in check
 
+# utilities can help maintain health
 
+du /tmp # check disk usage
+du -s /tmp # summary option
+du -sh /tmp # h option is human readable
+
+df -k # amount of disk free, in kilobyte disk blocks
+df -h # displays same in human readable
+df -i # inodes! (data blocks used on filesystem)
+# e.g. if most of disk is used, but not a lot of inodes used, can accomodate a lot of small files!
+
+shred --remove /tmp/sensitive_data # Overwrite old data with patterns
+shred -u /tmp/more_sensitive_data
+
+pathchk -p /this_contains_special_chars/?/ # checks for this system by default
+# p for portable to other posix compliant systems. message re: nonportable char ?
+
+# find has many options: -amin -anewer, -atime -cmin -cnewer -ctime -empty -false -fstype 
+# -gid -group -ilname -iname -inum -ipath -iregex -links -lname -mmin -mtime -name -newer -nouser -nogroup 
+# -path -perm -regex -size -true -type -uid -user -xtype -exec -fls -fprint -fprint0 -fprintf 
+# -ok -print -print0 -printf -prune -ls () ! -not -o -or -a -and -daystart -depth -follow -help 
+# -maxdepth -mindepth -mount -noleaf -version -xdev
+find / -user ahall -print
+# e.g.
+find condition1 -and (condition2 or condition3)
+# use escaped brackets surrounded by spaces to ensure booleans are interpreted correctly
+#
+find /home -type d -user ahall -or -user nhall -print
+find /home -type d \( -user ahall -or -user nhall \) -print # without escaped will be an error
 
 
 
