@@ -534,7 +534,15 @@ find /tmp -exec grep -q 'Report' {} \; -print # grep indicates success by findin
 # tar comes from Tape ARchive, simple command line, also can automatically compress with gzip 
 # the tar command does not backup empty dirs not special files, so slightly limited but ideal for user backups
 # definitely not for full system backups
-# p23 
+# tar often combine with GNU gzip for compression, options to call it, 
+# -z option with (t)able of contents or e(x)tract or (c)reate archive
+# bzip2 with -I option
+
+# dump command used with restore to provide interactive or full restores. 
+# full dump level 0, incremental backups, level 1 - 9
+dump -0u -f /dev/st0 / # complete backup of root filesystem to scsi tape device /dev/st0 and updates dumpdates
+# incremental backups use information in /etc/dumpdates by dump with used with -u
+cat /etc/dumpdates
 
 
 
