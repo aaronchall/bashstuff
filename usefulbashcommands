@@ -507,17 +507,34 @@ pathchk -p /this_contains_special_chars/?/ # checks for this system by default
 # -maxdepth -mindepth -mount -noleaf -version -xdev
 find / -user ahall -print
 # e.g.
-find condition1 -and (condition2 or condition3)
+find condition1 -and (condition2 -or condition3)
 # use escaped brackets surrounded by spaces to ensure booleans are interpreted correctly
 #
+find /tmp -type f # find regular files
 find /home -type d -user ahall -or -user nhall -print
 find /home -type d \( -user ahall -or -user nhall \) -print # without escaped will be an error
+# common options are -name (filename) -user (username or UID) -mtime (last modification)
+# and -size for size of the file in blocks of 512 bytes
+find /home /tmp -user ahall -mtime -1 -size +5 # can search multiple dirs -1 is less than one
+find /home /tmp -user ahall -mtime +1 -size +5 # get older +1 is greater than one
+find /tmp -newer /last_updated # check compares against /last_updated's modification date
+find /tmp -type f -or -mtime -1
 
+# can pipe output of find to xargs to construct required command line or use -exec or -ok options
+# use xargs to process large file lists quickly, 
+# use -exec or -ok to select files for other find options, not bulk processing
+find /tmp -user ahall | xargs ls -l
+# achieves the same outcome, must escape semicolon to shell, runs for each file, so slow execution on large lists
+find /tmp -user ahall -exec ls -l {} \; # filename will be replaced by {}
+find /tmp -exec grep -q 'Report' {} \; -print # grep indicates success by finding pattern in file 
+# -q means to be quiet, non-verbose
 
-
-
-
-
+# backups: cpio and tar for Unix, and zip and unzip, and lha for Windows, dump if portability not an issue
+# also gzip and bzip2 for high quality compression at good speed
+# tar comes from Tape ARchive, simple command line, also can automatically compress with gzip 
+# the tar command does not backup empty dirs not special files, so slightly limited but ideal for user backups
+# definitely not for full system backups
+# p23 
 
 
 
