@@ -508,7 +508,7 @@ pathchk -p /this_contains_special_chars/?/ # checks for this system by default
 find / -user ahall -print
 # e.g.
 find condition1 -and (condition2 -or condition3)
-# use escaped brackets surrounded by spaces to ensure booleans are interpreted correctly
+# use escaped brackets (parens?) surrounded by spaces to ensure booleans are interpreted correctly
 #
 find /tmp -type f # find regular files
 find /home -type d -user ahall -or -user nhall -print
@@ -524,7 +524,7 @@ find /tmp -type f -or -mtime -1
 # use xargs to process large file lists quickly, 
 # use -exec or -ok to select files for other find options, not bulk processing
 find /tmp -user ahall | xargs ls -l
-# achieves the same outcome, must escape semicolon to shell, runs for each file, so slow execution on large lists
+# achieves the same outcome, *must escape* semicolon to shell, runs for each file, so slow execution on large lists
 find /tmp -user ahall -exec ls -l {} \; # filename will be replaced by {}
 find /tmp -exec grep -q 'Report' {} \; -print # grep indicates success by finding pattern in file 
 # -q means to be quiet, non-verbose
@@ -536,25 +536,59 @@ find /tmp -exec grep -q 'Report' {} \; -print # grep indicates success by findin
 # definitely not for full system backups
 # tar often combine with GNU gzip for compression, options to call it, 
 # -z option with (t)able of contents or e(x)tract or (c)reate archive
-# bzip2 with -I option
+# bzip2 with -I option to tar (newer versions)
 
-# dump command used with restore to provide interactive or full restores. 
+# dump command used with restore to provide interactive or full (level 0) restores. 
 # full dump level 0, incremental backups, level 1 - 9
 dump -0u -f /dev/st0 / # complete backup of root filesystem to scsi tape device /dev/st0 and updates dumpdates
 # incremental backups use information in /etc/dumpdates by dump with used with -u
 cat /etc/dumpdates
 
+# normal use of dump is to provide automated backups, full and incremental, 
+# provides secure coverage of files with minimum number of tapes
+# suggest based on Tower of Hanoi algorithm, e.g.: Sun <- 0, 1, 3, 2, 5, 4, 7 -> Sat
+# level other than 0 backups on files changes since backup of lower level
+# level 2 backups file changes since last level 0 or level 1
 
+# rsync to syncronize files between two systems:
+rsync -auvz /home/ backup:/home/
+# (a)rchive mode, (u)pdate (skip files newer on recieving system), 
+# (v)erbose activity info, (z): compress during transfer
+# see also cloud solutions
 
+# users can create too much data
+# quota mechanism requires kernal to have support built-in, 
+# files systems to have user or group quotas enables, 
+# and quotas must be turned on
 
+cat /etc/fstab
+quota
+# Disk quotas for user Aaron (uid 500):
+#     Filesystem blocks quota   limit grace files quota limit grace
+#     /dev/hdc2 3732721     0 4096000         143   200  2000
+make_big_file /home/big_file
+# make_big_file: /home/big_file: Disk quota exceeded
 
+# usrquota and grpquota options set quota availability
+# placed in options column of /etc/fstab
+# system startup will run quotaon command to enable
+# Users can view limits with quota command
+# exceeding quotas causes error message returned
 
+# so that du and df for file system statistics
+# shred for secure file removal
+# pathchk to check pathnames
+# find and xargs to search for files
+# tar, dump, restore, and rsync to backup and restore files
+# gzip to compress backups
+# quota, usrquota, grpquota, and quotaon to view and manage quotas
+# should also review bzip2, block sorting file compressor better than qzip
+# and cpio: CoPy In-Out utility backup arbitrary file lists
 
-
-
-
-
-
+# can no display disk space usage and remove unwanted files
+# identify commands used to search for files
+# back up files
+# describe how quotas are used
 
 
 
